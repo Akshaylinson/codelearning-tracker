@@ -90,13 +90,17 @@
                     </div>
                 </div>
 
-                <!-- Add Task Form -->
+                <!-- Unified Domain & Task Management -->
                 <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
-                    <h3 class="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-green-300">Add New Task</h3>
-                    <form id="task-form" class="space-y-4">
+                    <h3 class="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-green-300">Add Domain & Task</h3>
+                    <form id="domain-task-form" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium mb-1 text-green-200">Day</label>
+                                <label class="block text-sm font-medium mb-1 text-green-200">Domain Name</label>
+                                <input id="domain-name" type="text" placeholder="e.g., AI/ML, Web Development..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-green-200">Day to Assign</label>
                                 <select id="task-day" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
                                     <option value="monday">Monday</option>
                                     <option value="tuesday">Tuesday</option>
@@ -107,34 +111,27 @@
                                     <option value="sunday">Sunday</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-green-200">Domain</label>
-                                <select id="task-domain" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
-                                    <!-- Domain options will be populated dynamically -->
-                                </select>
-                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1 text-green-200">Task Description</label>
                             <input id="task-description" type="text" placeholder="e.g., Complete ML project, Study algorithms..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
                         </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg text-sm md:text-base">Add Task</button>
+                        <div class="flex space-x-3">
+                            <button type="submit" class="flex-1 bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg text-sm md:text-base">
+                                Add Domain & Task
+                            </button>
+                            <button type="button" id="quick-add-task" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg text-sm md:text-base">
+                                Quick Add Task
+                            </button>
+                        </div>
                     </form>
-                </div>
 
-                <!-- Domain Management -->
-                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
-                    <div class="flex justify-between items-center mb-3 md:mb-4">
-                        <h3 class="text-lg md:text-xl font-semibold text-green-300">Manage Domains</h3>
-                        <button id="show-domain-modal" class="bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-3 rounded-lg transition-all duration-300 text-sm md:text-base">
-                            <i class="fas fa-plus mr-1"></i> Add Domain
-                        </button>
-                    </div>
-                    <div class="space-y-4">
+                    <!-- Current Domains -->
+                    <div class="mt-6 pt-4 border-t border-green-500/20">
+                        <h4 class="text-md font-semibold mb-3 text-green-300">Current Domains</h4>
                         <div class="flex flex-wrap gap-2" id="domain-tags">
                             <!-- Domain tags will appear here -->
                         </div>
-                        <p class="text-xs text-green-200">Click on a domain to assign it to specific days</p>
                     </div>
                 </div>
             </section>
@@ -184,74 +181,41 @@
         </main>
     </div>
 
-    <!-- Domain Assignment Modal -->
-    <div id="domain-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+    <!-- Quick Add Task Modal -->
+    <div id="quick-add-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
         <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold text-green-300" id="modal-title">Assign Domain to Days</h3>
-                <button id="close-modal" class="text-gray-400 hover:text-white">
+                <h3 class="text-xl font-semibold text-green-300">Quick Add Task</h3>
+                <button id="close-quick-modal" class="text-gray-400 hover:text-white">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-2 text-green-200">Select Days for <span id="selected-domain-name" class="font-semibold"></span></label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="monday">
-                            <span class="text-white">Monday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="tuesday">
-                            <span class="text-white">Tuesday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="wednesday">
-                            <span class="text-white">Wednesday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="thursday">
-                            <span class="text-white">Thursday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="friday">
-                            <span class="text-white">Friday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="saturday">
-                            <span class="text-white">Saturday</span>
-                        </label>
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" class="day-checkbox" value="sunday">
-                            <span class="text-white">Sunday</span>
-                        </label>
-                    </div>
+                    <label class="block text-sm font-medium mb-2 text-green-200">Select Domain</label>
+                    <select id="quick-domain" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                        <!-- Domain options will be populated dynamically -->
+                    </select>
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button id="cancel-modal" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button id="save-domain-days" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Domain Modal -->
-    <div id="add-domain-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
-        <div class="glass-dark rounded-2xl p-6 w-full max-w-md mx-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold text-green-300">Add New Domain</h3>
-                <button id="close-add-modal" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-2 text-green-200">Domain Name</label>
-                    <input type="text" id="new-domain-name" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white" placeholder="e.g., AI/ML, Web Development">
+                    <label class="block text-sm font-medium mb-2 text-green-200">Day</label>
+                    <select id="quick-day" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-green-200">Task Description</label>
+                    <input type="text" id="quick-description" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white" placeholder="Enter task description">
                 </div>
                 <div class="flex justify-end space-x-3 pt-4">
-                    <button id="cancel-add-modal" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                    <button id="save-new-domain" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">Add Domain</button>
+                    <button id="cancel-quick-modal" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                    <button id="save-quick-task" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">Add Task</button>
                 </div>
             </div>
         </div>
@@ -272,7 +236,6 @@
                     { name: 'Programming', days: ['monday', 'wednesday', 'friday'] }
                 ];
                 this.monthsData = this.loadMonthsData() || {};
-                this.currentEditingDomain = null;
                 this.init();
             }
 
@@ -280,7 +243,7 @@
                 this.renderWeek();
                 this.setupEventListeners();
                 this.renderDomainTags();
-                this.updateDomainSelect();
+                this.updateQuickDomainSelect();
                 this.updateAnalytics();
             }
 
@@ -346,88 +309,58 @@
                 return weekData;
             }
 
-            addTask(day, domain, description) {
+            addDomainAndTask(domainName, day, description) {
+                // Check if domain already exists
+                let domain = this.domains.find(d => d.name === domainName);
+                
+                if (!domain) {
+                    // Create new domain
+                    domain = {
+                        name: domainName,
+                        days: [day]
+                    };
+                    this.domains.push(domain);
+                } else if (!domain.days.includes(day)) {
+                    // Add day to existing domain
+                    domain.days.push(day);
+                }
+                
+                this.saveDomains();
+                
+                // Add task to current week
                 const weekData = this.getCurrentWeekData();
                 weekData[day].push({
                     id: Date.now(),
-                    domain,
+                    domain: domainName,
                     description,
                     completed: false,
                     createdAt: new Date().toISOString(),
                     isDomainTask: false
                 });
+                
                 this.saveData();
-                this.updateMonthsData(domain);
+                this.updateMonthsData(domainName);
                 this.renderWeek();
+                this.renderDomainTags();
+                this.updateQuickDomainSelect();
                 this.updateAnalytics();
             }
 
-            addDomain(domainName) {
-                if (domainName && !this.domains.some(d => d.name === domainName)) {
-                    this.domains.push({
-                        name: domainName,
-                        days: []
-                    });
-                    this.saveDomains();
-                    this.renderDomainTags();
-                    this.updateDomainSelect();
-                    this.renderWeek(); // Refresh week to show new domain tasks
-                }
-            }
-
-            updateDomainDays(domainName, days) {
-                const domain = this.domains.find(d => d.name === domainName);
-                if (domain) {
-                    domain.days = days;
-                    this.saveDomains();
-                    
-                    // Update all weeks with the new domain assignments
-                    Object.keys(this.weeks).forEach(week => {
-                        // Remove existing domain tasks for this domain
-                        Object.keys(this.weeks[week]).forEach(day => {
-                            this.weeks[week][day] = this.weeks[week][day].filter(
-                                task => !(task.isDomainTask && task.domain === domainName)
-                            );
-                        });
-                        
-                        // Add domain tasks to assigned days
-                        days.forEach(day => {
-                            this.weeks[week][day].push({
-                                id: Date.now() + Math.random(),
-                                domain: domainName,
-                                description: `Work on ${domainName}`,
-                                completed: false,
-                                createdAt: new Date().toISOString(),
-                                isDomainTask: true
-                            });
-                        });
-                    });
-                    
-                    this.saveData();
-                    this.renderWeek();
-                }
-            }
-
-            removeDomain(domainName) {
-                const index = this.domains.findIndex(d => d.name === domainName);
-                if (index > -1) {
-                    this.domains.splice(index, 1);
-                    this.saveDomains();
-                    this.renderDomainTags();
-                    this.updateDomainSelect();
-                    
-                    // Remove tasks with this domain from all weeks
-                    Object.keys(this.weeks).forEach(week => {
-                        Object.keys(this.weeks[week]).forEach(day => {
-                            this.weeks[week][day] = this.weeks[week][day].filter(
-                                task => task.domain !== domainName
-                            );
-                        });
-                    });
-                    this.saveData();
-                    this.renderWeek();
-                    this.updateAnalytics();
-                }
+            addQuickTask(domainName, day, description) {
+                const weekData = this.getCurrentWeekData();
+                weekData[day].push({
+                    id: Date.now(),
+                    domain: domainName,
+                    description,
+                    completed: false,
+                    createdAt: new Date().toISOString(),
+                    isDomainTask: false
+                });
+                
+                this.saveData();
+                this.updateMonthsData(domainName);
+                this.renderWeek();
+                this.updateAnalytics();
             }
 
             updateMonthsData(domain) {
@@ -464,6 +397,28 @@
                 const taskIndex = weekData[day].findIndex(t => t.id === taskId);
                 if (taskIndex > -1 && !weekData[day][taskIndex].isDomainTask) {
                     weekData[day].splice(taskIndex, 1);
+                    this.saveData();
+                    this.renderWeek();
+                    this.updateAnalytics();
+                }
+            }
+
+            removeDomain(domainName) {
+                const index = this.domains.findIndex(d => d.name === domainName);
+                if (index > -1) {
+                    this.domains.splice(index, 1);
+                    this.saveDomains();
+                    this.renderDomainTags();
+                    this.updateQuickDomainSelect();
+                    
+                    // Remove tasks with this domain from all weeks
+                    Object.keys(this.weeks).forEach(week => {
+                        Object.keys(this.weeks[week]).forEach(day => {
+                            this.weeks[week][day] = this.weeks[week][day].filter(
+                                task => task.domain !== domainName
+                            );
+                        });
+                    });
                     this.saveData();
                     this.renderWeek();
                     this.updateAnalytics();
@@ -548,8 +503,8 @@
                 });
             }
 
-            updateDomainSelect() {
-                const select = document.getElementById('task-domain');
+            updateQuickDomainSelect() {
+                const select = document.getElementById('quick-domain');
                 select.innerHTML = '';
                 
                 this.domains.forEach(domain => {
@@ -558,27 +513,6 @@
                     option.textContent = domain.name;
                     select.appendChild(option);
                 });
-            }
-
-            openDomainModal(domainName) {
-                this.currentEditingDomain = domainName;
-                document.getElementById('selected-domain-name').textContent = domainName;
-                
-                // Clear all checkboxes
-                document.querySelectorAll('.day-checkbox').forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                
-                // Check the days assigned to this domain
-                const domain = this.domains.find(d => d.name === domainName);
-                if (domain) {
-                    domain.days.forEach(day => {
-                        const checkbox = document.querySelector(`.day-checkbox[value="${day}"]`);
-                        if (checkbox) checkbox.checked = true;
-                    });
-                }
-                
-                document.getElementById('domain-modal').classList.remove('hidden');
             }
 
             getDomainColor(domain) {
@@ -618,21 +552,22 @@
             }
 
             setupEventListeners() {
-                // Task form submission
-                document.getElementById('task-form').addEventListener('submit', (e) => {
+                // Domain & Task form submission
+                document.getElementById('domain-task-form').addEventListener('submit', (e) => {
                     e.preventDefault();
+                    const domainName = document.getElementById('domain-name').value.trim();
                     const day = document.getElementById('task-day').value;
-                    const domain = document.getElementById('task-domain').value;
                     const description = document.getElementById('task-description').value.trim();
                     
-                    if (domain && description) {
-                        this.addTask(day, domain, description);
+                    if (domainName && description) {
+                        this.addDomainAndTask(domainName, day, description);
+                        document.getElementById('domain-name').value = '';
                         document.getElementById('task-description').value = '';
                         
                         // Show success feedback
-                        const button = e.target.querySelector('button');
+                        const button = e.target.querySelector('button[type="submit"]');
                         const originalText = button.textContent;
-                        button.textContent = 'Task Added!';
+                        button.textContent = 'Added!';
                         button.classList.remove('from-green-600', 'to-emerald-700');
                         button.classList.add('from-green-700', 'to-green-800');
                         
@@ -641,6 +576,24 @@
                             button.classList.remove('from-green-700', 'to-green-800');
                             button.classList.add('from-green-600', 'to-emerald-700');
                         }, 1500);
+                    }
+                });
+
+                // Quick Add Task button
+                document.getElementById('quick-add-task').addEventListener('click', () => {
+                    document.getElementById('quick-add-modal').classList.remove('hidden');
+                });
+
+                // Save Quick Task
+                document.getElementById('save-quick-task').addEventListener('click', () => {
+                    const domainName = document.getElementById('quick-domain').value;
+                    const day = document.getElementById('quick-day').value;
+                    const description = document.getElementById('quick-description').value.trim();
+                    
+                    if (domainName && description) {
+                        this.addQuickTask(domainName, day, description);
+                        document.getElementById('quick-description').value = '';
+                        document.getElementById('quick-add-modal').classList.add('hidden');
                     }
                 });
 
@@ -659,43 +612,13 @@
                     this.updateAnalytics();
                 });
 
-                // Domain management
-                document.getElementById('show-domain-modal').addEventListener('click', () => {
-                    document.getElementById('add-domain-modal').classList.remove('hidden');
-                });
-
-                document.getElementById('save-new-domain').addEventListener('click', () => {
-                    const domainName = document.getElementById('new-domain-name').value.trim();
-                    if (domainName) {
-                        this.addDomain(domainName);
-                        document.getElementById('new-domain-name').value = '';
-                        document.getElementById('add-domain-modal').classList.add('hidden');
-                    }
-                });
-
-                // Domain assignment modal
-                document.getElementById('save-domain-days').addEventListener('click', () => {
-                    const selectedDays = Array.from(document.querySelectorAll('.day-checkbox:checked'))
-                        .map(checkbox => checkbox.value);
-                    this.updateDomainDays(this.currentEditingDomain, selectedDays);
-                    document.getElementById('domain-modal').classList.add('hidden');
-                });
-
                 // Modal close buttons
-                document.getElementById('close-modal').addEventListener('click', () => {
-                    document.getElementById('domain-modal').classList.add('hidden');
+                document.getElementById('close-quick-modal').addEventListener('click', () => {
+                    document.getElementById('quick-add-modal').classList.add('hidden');
                 });
 
-                document.getElementById('cancel-modal').addEventListener('click', () => {
-                    document.getElementById('domain-modal').classList.add('hidden');
-                });
-
-                document.getElementById('close-add-modal').addEventListener('click', () => {
-                    document.getElementById('add-domain-modal').classList.add('hidden');
-                });
-
-                document.getElementById('cancel-add-modal').addEventListener('click', () => {
-                    document.getElementById('add-domain-modal').classList.add('hidden');
+                document.getElementById('cancel-quick-modal').addEventListener('click', () => {
+                    document.getElementById('quick-add-modal').classList.add('hidden');
                 });
 
                 // Event delegation for task checkboxes, delete buttons, and domain tags
@@ -718,13 +641,6 @@
                         const button = e.target.closest('.delete-domain');
                         const domain = button.getAttribute('data-domain');
                         this.removeDomain(domain);
-                    }
-                    
-                    // Click on domain tag (but not the delete button)
-                    if (e.target.closest('[data-domain]') && !e.target.closest('.delete-domain')) {
-                        const tag = e.target.closest('[data-domain]');
-                        const domain = tag.getAttribute('data-domain');
-                        this.openDomainModal(domain);
                     }
                 });
             }
