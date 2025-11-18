@@ -6,6 +6,7 @@
     <title>Learning Path Tracker | Professional Development</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
@@ -59,40 +60,44 @@
 <body class="min-h-screen gradient-bg text-white font-sans">
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
-        <header class="text-center mb-12 animate-fade-in">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Learning Path Tracker</h1>
-            <p class="text-xl text-green-200 max-w-2xl mx-auto">Track your daily learning activities, monitor progress, and optimize your journey to land your dream IT job</p>
+        <header class="text-center mb-8 md:mb-12 animate-fade-in">
+            <h1 class="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-gradient">Learning Path Tracker</h1>
+            <p class="text-lg md:text-xl text-green-200 max-w-2xl mx-auto px-2">Track your daily learning activities and optimize your IT career journey</p>
         </header>
 
         <!-- Main Content -->
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             <!-- Task Management Section -->
-            <section class="lg:col-span-2 space-y-8">
+            <section class="lg:col-span-2 space-y-6 md:space-y-8">
                 <!-- Week Navigation -->
-                <div class="glass-dark rounded-2xl p-6 shadow-xl glow">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-green-300">Weekly Tasks</h2>
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl glow">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 space-y-4 sm:space-y-0">
+                        <h2 class="text-xl md:text-2xl font-semibold text-green-300">Weekly Tasks</h2>
                         <div class="flex space-x-2">
-                            <button id="prev-week" class="glass px-4 py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">Previous</button>
-                            <span id="week-display" class="glass px-4 py-2 rounded-lg font-medium text-green-300">Week 1</span>
-                            <button id="next-week" class="glass px-4 py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">Next</button>
+                            <button id="prev-week" class="glass px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="week-display" class="glass px-4 py-2 rounded-lg font-medium text-green-300 text-sm md:text-base">Week 1</span>
+                            <button id="next-week" class="glass px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
 
                     <!-- Days Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                         <!-- Day Cards will be generated here -->
                     </div>
                 </div>
 
                 <!-- Add Task Form -->
-                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
-                    <h3 class="text-xl font-semibold mb-4 text-green-300">Add New Task</h3>
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
+                    <h3 class="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-green-300">Add New Task</h3>
                     <form id="task-form" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium mb-1 text-green-200">Day</label>
-                                <select id="task-day" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                                <select id="task-day" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
                                     <option value="monday">Monday</option>
                                     <option value="tuesday">Tuesday</option>
                                     <option value="wednesday">Wednesday</option>
@@ -104,65 +109,71 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-1 text-green-200">Domain</label>
-                                <select id="task-domain" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
-                                    <option value="ai-ml">AI/ML</option>
-                                    <option value="web-dev">Web Development</option>
-                                    <option value="data-science">Data Science</option>
-                                    <option value="cloud">Cloud Computing</option>
-                                    <option value="cybersecurity">Cybersecurity</option>
-                                    <option value="programming">Programming</option>
-                                    <option value="other">Other</option>
-                                </select>
+                                <input id="task-domain" type="text" placeholder="e.g., AI/ML, Web Dev, Data Science..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1 text-green-200">Task Description</label>
-                            <input id="task-description" type="text" placeholder="e.g., Complete ML project, Study algorithms..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                            <input id="task-description" type="text" placeholder="e.g., Complete ML project, Study algorithms..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
                         </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg">Add Task</button>
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg text-sm md:text-base">Add Task</button>
                     </form>
+                </div>
+
+                <!-- Domain Management -->
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
+                    <h3 class="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-green-300">Manage Domains</h3>
+                    <div class="space-y-4">
+                        <div class="flex flex-wrap gap-2" id="domain-tags">
+                            <!-- Domain tags will appear here -->
+                        </div>
+                        <div class="flex space-x-2">
+                            <input id="new-domain" type="text" placeholder="Add new domain..." class="flex-1 bg-dark-card border border-green-500/30 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white text-sm md:text-base">
+                            <button id="add-domain" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm md:text-base">Add</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- Analytics Section -->
-            <section class="space-y-8">
+            <section class="space-y-6 md:space-y-8">
                 <!-- Stats Overview -->
-                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
-                    <h2 class="text-2xl font-semibold mb-6 text-green-300">Progress Overview</h2>
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-green-300">Progress Overview</h2>
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <span class="text-green-200">Completion Rate</span>
-                            <span id="completion-rate" class="text-xl font-bold text-green-400">0%</span>
+                            <span class="text-green-200 text-sm md:text-base">Completion Rate</span>
+                            <span id="completion-rate" class="text-lg md:text-xl font-bold text-green-400">0%</span>
                         </div>
                         <div class="w-full bg-gray-800 rounded-full h-2.5">
                             <div id="completion-bar" class="bg-gradient-to-r from-green-500 to-emerald-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-4 mt-6">
-                            <div class="text-center p-4 glass rounded-lg">
-                                <div class="text-2xl font-bold text-green-400" id="completed-tasks">0</div>
-                                <div class="text-sm text-green-300">Completed</div>
+                        <div class="grid grid-cols-2 gap-3 md:gap-4 mt-4 md:mt-6">
+                            <div class="text-center p-3 md:p-4 glass rounded-lg">
+                                <div class="text-xl md:text-2xl font-bold text-green-400" id="completed-tasks">0</div>
+                                <div class="text-xs md:text-sm text-green-300">Completed</div>
                             </div>
-                            <div class="text-center p-4 glass rounded-lg">
-                                <div class="text-2xl font-bold text-emerald-400" id="total-tasks">0</div>
-                                <div class="text-sm text-emerald-300">Total Tasks</div>
+                            <div class="text-center p-3 md:p-4 glass rounded-lg">
+                                <div class="text-xl md:text-2xl font-bold text-emerald-400" id="total-tasks">0</div>
+                                <div class="text-xs md:text-sm text-emerald-300">Total Tasks</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Domain Distribution -->
-                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
-                    <h2 class="text-2xl font-semibold mb-4 text-green-300">Domain Focus</h2>
-                    <div class="h-64">
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4 text-green-300">Domain Focus</h2>
+                    <div class="h-48 md:h-64">
                         <canvas id="domain-chart"></canvas>
                     </div>
                 </div>
 
-                <!-- Weekly Progress -->
-                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
-                    <h2 class="text-2xl font-semibold mb-4 text-green-300">Weekly Progress</h2>
-                    <div class="h-64">
-                        <canvas id="weekly-chart"></canvas>
+                <!-- Monthly Progress -->
+                <div class="glass-dark rounded-2xl p-4 md:p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4 text-green-300">Monthly Progress</h2>
+                    <div class="h-48 md:h-64">
+                        <canvas id="monthly-chart"></canvas>
                     </div>
                 </div>
             </section>
@@ -175,12 +186,15 @@
             constructor() {
                 this.currentWeek = 1;
                 this.weeks = this.loadData() || {};
+                this.domains = this.loadDomains() || ['AI/ML', 'Web Development', 'Data Science', 'Cloud Computing', 'Cybersecurity', 'Programming'];
+                this.monthsData = this.loadMonthsData() || {};
                 this.init();
             }
 
             init() {
                 this.renderWeek();
                 this.setupEventListeners();
+                this.renderDomainTags();
                 this.updateAnalytics();
             }
 
@@ -193,19 +207,57 @@
                 localStorage.setItem('learningTracker', JSON.stringify(this.weeks));
             }
 
+            loadDomains() {
+                const data = localStorage.getItem('learningTrackerDomains');
+                return data ? JSON.parse(data) : null;
+            }
+
+            saveDomains() {
+                localStorage.setItem('learningTrackerDomains', JSON.stringify(this.domains));
+            }
+
+            loadMonthsData() {
+                const data = localStorage.getItem('learningTrackerMonths');
+                return data ? JSON.parse(data) : {};
+            }
+
+            saveMonthsData() {
+                localStorage.setItem('learningTrackerMonths', JSON.stringify(this.monthsData));
+            }
+
             getCurrentWeekData() {
                 if (!this.weeks[this.currentWeek]) {
-                    this.weeks[this.currentWeek] = {
-                        monday: [],
-                        tuesday: [],
-                        wednesday: [],
-                        thursday: [],
-                        friday: [],
-                        saturday: [],
-                        sunday: []
-                    };
+                    // Initialize with tasks from previous week if available
+                    this.weeks[this.currentWeek] = this.initializeWeekFromPrevious();
                 }
                 return this.weeks[this.currentWeek];
+            }
+
+            initializeWeekFromPrevious() {
+                const prevWeek = this.weeks[this.currentWeek - 1];
+                const weekData = {
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [],
+                    friday: [],
+                    saturday: [],
+                    sunday: []
+                };
+
+                if (prevWeek) {
+                    // Copy structure but reset completion status
+                    Object.keys(prevWeek).forEach(day => {
+                        weekData[day] = prevWeek[day].map(task => ({
+                            ...task,
+                            id: Date.now() + Math.random(), // New ID
+                            completed: false,
+                            createdAt: new Date().toISOString()
+                        }));
+                    });
+                }
+
+                return weekData;
             }
 
             addTask(day, domain, description) {
@@ -218,8 +270,54 @@
                     createdAt: new Date().toISOString()
                 });
                 this.saveData();
+                this.updateMonthsData(domain);
                 this.renderWeek();
                 this.updateAnalytics();
+            }
+
+            addDomain(domain) {
+                if (domain && !this.domains.includes(domain)) {
+                    this.domains.push(domain);
+                    this.saveDomains();
+                    this.renderDomainTags();
+                }
+            }
+
+            removeDomain(domain) {
+                const index = this.domains.indexOf(domain);
+                if (index > -1) {
+                    this.domains.splice(index, 1);
+                    this.saveDomains();
+                    this.renderDomainTags();
+                    
+                    // Remove tasks with this domain from all weeks
+                    Object.keys(this.weeks).forEach(week => {
+                        Object.keys(this.weeks[week]).forEach(day => {
+                            this.weeks[week][day] = this.weeks[week][day].filter(task => task.domain !== domain);
+                        });
+                    });
+                    this.saveData();
+                    this.renderWeek();
+                    this.updateAnalytics();
+                }
+            }
+
+            updateMonthsData(domain) {
+                const currentDate = new Date();
+                const monthYear = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`;
+                
+                if (!this.monthsData[monthYear]) {
+                    this.monthsData[monthYear] = {};
+                }
+                
+                if (!this.monthsData[monthYear][domain]) {
+                    this.monthsData[monthYear][domain] = 0;
+                }
+                
+                // Increment task count for this domain in current month
+                this.monthsData[monthYear][domain] += 1;
+                
+                this.saveMonthsData();
             }
 
             toggleTask(day, taskId) {
@@ -243,7 +341,7 @@
 
             renderWeek() {
                 const weekData = this.getCurrentWeekData();
-                const daysContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-4');
+                const daysContainer = document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-3.gap-3.md\\:gap-4');
                 const weekDisplay = document.getElementById('week-display');
                 
                 weekDisplay.textContent = `Week ${this.currentWeek}`;
@@ -260,41 +358,39 @@
 
             createDayCard(day, tasks) {
                 const dayCard = document.createElement('div');
-                dayCard.className = 'glass rounded-xl p-4 transition-all duration-300 hover:bg-green-900/10';
+                dayCard.className = 'glass rounded-xl p-3 md:p-4 transition-all duration-300 hover:bg-green-900/10';
                 
                 const dayName = day.charAt(0).toUpperCase() + day.slice(1);
                 const completedCount = tasks.filter(t => t.completed).length;
                 const totalCount = tasks.length;
                 
                 dayCard.innerHTML = `
-                    <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-semibold text-lg text-green-300">${dayName}</h3>
-                        <span class="text-sm bg-green-500/20 text-green-300 px-2 py-1 rounded-full">${completedCount}/${totalCount}</span>
+                    <div class="flex justify-between items-center mb-2 md:mb-3">
+                        <h3 class="font-semibold text-green-300 text-sm md:text-lg">${dayName}</h3>
+                        <span class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full">${completedCount}/${totalCount}</span>
                     </div>
-                    <div class="space-y-2 max-h-60 overflow-y-auto">
+                    <div class="space-y-2 max-h-40 md:max-h-60 overflow-y-auto">
                         ${tasks.length > 0 ? 
                             tasks.map(task => `
-                                <div class="p-3 rounded-lg bg-dark-card border border-green-500/20 transition-all duration-300 ${task.completed ? 'opacity-70' : ''}">
+                                <div class="p-2 md:p-3 rounded-lg bg-dark-card border border-green-500/20 transition-all duration-300 ${task.completed ? 'opacity-70' : ''}">
                                     <div class="flex justify-between items-start">
                                         <div class="flex items-center space-x-2">
                                             <input type="checkbox" ${task.completed ? 'checked' : ''} 
-                                                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500 bg-dark-card" 
+                                                class="h-3 w-3 md:h-4 md:w-4 rounded border-gray-300 text-green-600 focus:ring-green-500 bg-dark-card" 
                                                 data-day="${day}" data-id="${task.id}">
-                                            <span class="${task.completed ? 'line-through text-gray-400' : 'text-white'}">${task.description}</span>
+                                            <span class="${task.completed ? 'line-through text-gray-400' : 'text-white'} text-xs md:text-sm">${task.description}</span>
                                         </div>
                                         <button class="text-red-400 hover:text-red-300 transition-colors delete-task" data-day="${day}" data-id="${task.id}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
+                                            <i class="fas fa-times text-xs md:text-sm"></i>
                                         </button>
                                     </div>
                                     <div class="mt-1 flex justify-between items-center">
-                                        <span class="text-xs px-2 py-1 rounded-full ${this.getDomainColor(task.domain)}">${this.formatDomain(task.domain)}</span>
+                                        <span class="text-xs px-2 py-1 rounded-full ${this.getDomainColor(task.domain)}">${task.domain}</span>
                                         <span class="text-xs text-gray-400">${new Date(task.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             `).join('') : 
-                            '<p class="text-gray-400 text-center py-4">No tasks for this day</p>'
+                            '<p class="text-gray-400 text-center py-3 md:py-4 text-xs md:text-sm">No tasks for this day</p>'
                         }
                     </div>
                 `;
@@ -302,30 +398,57 @@
                 return dayCard;
             }
 
-            getDomainColor(domain) {
-                const colors = {
-                    'ai-ml': 'bg-green-500/20 text-green-300',
-                    'web-dev': 'bg-emerald-500/20 text-emerald-300',
-                    'data-science': 'bg-teal-500/20 text-teal-300',
-                    'cloud': 'bg-cyan-500/20 text-cyan-300',
-                    'cybersecurity': 'bg-lime-500/20 text-lime-300',
-                    'programming': 'bg-green-600/20 text-green-400',
-                    'other': 'bg-gray-500/20 text-gray-300'
-                };
-                return colors[domain] || colors['other'];
+            renderDomainTags() {
+                const container = document.getElementById('domain-tags');
+                container.innerHTML = '';
+                
+                this.domains.forEach(domain => {
+                    const tag = document.createElement('div');
+                    tag.className = `inline-flex items-center px-3 py-1 rounded-full text-xs md:text-sm ${this.getDomainColor(domain)}`;
+                    tag.innerHTML = `
+                        ${domain}
+                        <button class="ml-2 text-red-400 hover:text-red-300 delete-domain" data-domain="${domain}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    container.appendChild(tag);
+                });
             }
 
-            formatDomain(domain) {
-                const names = {
-                    'ai-ml': 'AI/ML',
-                    'web-dev': 'Web Dev',
-                    'data-science': 'Data Science',
-                    'cloud': 'Cloud',
-                    'cybersecurity': 'Security',
-                    'programming': 'Programming',
-                    'other': 'Other'
+            getDomainColor(domain) {
+                // Generate a consistent color based on the domain name
+                const domainColors = {
+                    'AI/ML': 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
+                    'Web Development': 'bg-blue-500/20 text-blue-300 border border-blue-500/30',
+                    'Data Science': 'bg-green-500/20 text-green-300 border border-green-500/30',
+                    'Cloud Computing': 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30',
+                    'Cybersecurity': 'bg-red-500/20 text-red-300 border border-red-500/30',
+                    'Programming': 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
                 };
-                return names[domain] || domain;
+                
+                // If domain is in our predefined list, use that color
+                if (domainColors[domain]) {
+                    return domainColors[domain];
+                }
+                
+                // Otherwise, generate a color based on the domain name
+                const colors = [
+                    'bg-purple-500/20 text-purple-300 border border-purple-500/30',
+                    'bg-blue-500/20 text-blue-300 border border-blue-500/30',
+                    'bg-green-500/20 text-green-300 border border-green-500/30',
+                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30',
+                    'bg-red-500/20 text-red-300 border border-red-500/30',
+                    'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
+                    'bg-pink-500/20 text-pink-300 border border-pink-500/30',
+                    'bg-teal-500/20 text-teal-300 border border-teal-500/30',
+                ];
+                
+                let hash = 0;
+                for (let i = 0; i < domain.length; i++) {
+                    hash = domain.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                
+                return colors[Math.abs(hash) % colors.length];
             }
 
             setupEventListeners() {
@@ -333,11 +456,12 @@
                 document.getElementById('task-form').addEventListener('submit', (e) => {
                     e.preventDefault();
                     const day = document.getElementById('task-day').value;
-                    const domain = document.getElementById('task-domain').value;
+                    const domain = document.getElementById('task-domain').value.trim();
                     const description = document.getElementById('task-description').value.trim();
                     
-                    if (description) {
+                    if (domain && description) {
                         this.addTask(day, domain, description);
+                        document.getElementById('task-domain').value = '';
                         document.getElementById('task-description').value = '';
                         
                         // Show success feedback
@@ -352,6 +476,16 @@
                             button.classList.remove('from-green-700', 'to-green-800');
                             button.classList.add('from-green-600', 'to-emerald-700');
                         }, 1500);
+                    }
+                });
+
+                // Add domain
+                document.getElementById('add-domain').addEventListener('click', () => {
+                    const domainInput = document.getElementById('new-domain');
+                    const domain = domainInput.value.trim();
+                    if (domain) {
+                        this.addDomain(domain);
+                        domainInput.value = '';
                     }
                 });
 
@@ -383,6 +517,12 @@
                         const day = button.getAttribute('data-day');
                         const taskId = parseInt(button.getAttribute('data-id'));
                         this.deleteTask(day, taskId);
+                    }
+                    
+                    if (e.target.closest('.delete-domain')) {
+                        const button = e.target.closest('.delete-domain');
+                        const domain = button.getAttribute('data-domain');
+                        this.removeDomain(domain);
                     }
                 });
             }
@@ -430,7 +570,7 @@
 
                 // Update charts
                 this.updateDomainChart(domainCount);
-                this.updateWeeklyChart(dailyCompletion);
+                this.updateMonthlyChart();
             }
 
             updateDomainChart(domainData) {
@@ -448,26 +588,28 @@
                 this.domainChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: domains.map(d => this.formatDomain(d)),
+                        labels: domains,
                         datasets: [{
                             data: totalData,
                             backgroundColor: [
+                                'rgba(147, 51, 234, 0.7)', // Purple
+                                'rgba(59, 130, 246, 0.7)', // Blue
                                 'rgba(16, 185, 129, 0.7)', // Green
-                                'rgba(5, 150, 105, 0.7)',  // Emerald
+                                'rgba(234, 179, 8, 0.7)',  // Yellow
+                                'rgba(239, 68, 68, 0.7)',  // Red
+                                'rgba(99, 102, 241, 0.7)', // Indigo
+                                'rgba(236, 72, 153, 0.7)', // Pink
                                 'rgba(20, 184, 166, 0.7)', // Teal
-                                'rgba(6, 182, 212, 0.7)',  // Cyan
-                                'rgba(132, 204, 22, 0.7)', // Lime
-                                'rgba(22, 163, 74, 0.7)',  // Green-600
-                                'rgba(107, 114, 128, 0.7)' // Gray
                             ],
                             borderColor: [
+                                'rgba(147, 51, 234, 1)',
+                                'rgba(59, 130, 246, 1)',
                                 'rgba(16, 185, 129, 1)',
-                                'rgba(5, 150, 105, 1)',
+                                'rgba(234, 179, 8, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(99, 102, 241, 1)',
+                                'rgba(236, 72, 153, 1)',
                                 'rgba(20, 184, 166, 1)',
-                                'rgba(6, 182, 212, 1)',
-                                'rgba(132, 204, 22, 1)',
-                                'rgba(22, 163, 74, 1)',
-                                'rgba(107, 114, 128, 1)'
                             ],
                             borderWidth: 1
                         }]
@@ -481,7 +623,7 @@
                                 labels: {
                                     color: 'white',
                                     font: {
-                                        size: 11
+                                        size: 10
                                     }
                                 }
                             },
@@ -501,38 +643,51 @@
                 });
             }
 
-            updateWeeklyChart(dailyCompletion) {
-                const ctx = document.getElementById('weekly-chart').getContext('2d');
+            updateMonthlyChart() {
+                const ctx = document.getElementById('monthly-chart').getContext('2d');
                 
                 // Destroy existing chart if it exists
-                if (this.weeklyChart) {
-                    this.weeklyChart.destroy();
+                if (this.monthlyChart) {
+                    this.monthlyChart.destroy();
                 }
                 
-                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                const completionData = [
-                    dailyCompletion.monday,
-                    dailyCompletion.tuesday,
-                    dailyCompletion.wednesday,
-                    dailyCompletion.thursday,
-                    dailyCompletion.friday,
-                    dailyCompletion.saturday,
-                    dailyCompletion.sunday
-                ];
+                // Get last 6 months of data
+                const months = Object.keys(this.monthsData).sort().slice(-6);
+                const domains = [...new Set(
+                    months.flatMap(month => Object.keys(this.monthsData[month] || {}))
+                )];
                 
-                this.weeklyChart = new Chart(ctx, {
-                    type: 'bar',
+                const datasets = domains.map((domain, index) => {
+                    const colors = [
+                        'rgba(147, 51, 234, 1)', // Purple
+                        'rgba(59, 130, 246, 1)', // Blue
+                        'rgba(16, 185, 129, 1)', // Green
+                        'rgba(234, 179, 8, 1)',  // Yellow
+                        'rgba(239, 68, 68, 1)',  // Red
+                        'rgba(99, 102, 241, 1)', // Indigo
+                        'rgba(236, 72, 153, 1)', // Pink
+                        'rgba(20, 184, 166, 1)', // Teal
+                    ];
+                    
+                    return {
+                        label: domain,
+                        data: months.map(month => this.monthsData[month][domain] || 0),
+                        borderColor: colors[index % colors.length],
+                        backgroundColor: colors[index % colors.length].replace('1)', '0.1)'),
+                        tension: 0.3,
+                        fill: false
+                    };
+                });
+                
+                this.monthlyChart = new Chart(ctx, {
+                    type: 'line',
                     data: {
-                        labels: days,
-                        datasets: [{
-                            label: 'Completion %',
-                            data: completionData,
-                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                            borderColor: 'rgba(16, 185, 129, 1)',
-                            borderWidth: 1,
-                            borderRadius: 6,
-                            borderSkipped: false,
-                        }]
+                        labels: months.map(month => {
+                            const [year, monthNum] = month.split('-');
+                            const date = new Date(year, monthNum - 1);
+                            return date.toLocaleString('default', { month: 'short', year: '2-digit' });
+                        }),
+                        datasets: datasets
                     },
                     options: {
                         responsive: true,
@@ -540,17 +695,21 @@
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                max: 100,
                                 grid: {
                                     color: 'rgba(255, 255, 255, 0.1)'
                                 },
                                 ticks: {
                                     color: 'rgba(255, 255, 255, 0.7)'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Tasks',
+                                    color: 'rgba(255, 255, 255, 0.7)'
                                 }
                             },
                             x: {
                                 grid: {
-                                    display: false
+                                    color: 'rgba(255, 255, 255, 0.1)'
                                 },
                                 ticks: {
                                     color: 'rgba(255, 255, 255, 0.7)'
@@ -559,12 +718,11 @@
                         },
                         plugins: {
                             legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `Completion: ${context.raw}%`;
+                                position: 'bottom',
+                                labels: {
+                                    color: 'white',
+                                    font: {
+                                        size: 10
                                     }
                                 }
                             }
