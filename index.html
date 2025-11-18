@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path Tracker | Professional Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        secondary: '#111827',
+                        accent: '#059669',
+                        dark: '#000000',
+                        'dark-card': '#1f2937',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply bg-dark-card/80 backdrop-blur-md border border-green-500/20;
+            }
+            .glass-dark {
+                @apply bg-black/70 backdrop-blur-md border border-green-500/10;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #000000 0%, #111827 50%, #064e3b 100%);
+            }
+            .text-gradient {
+                @apply bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent;
+            }
+            .glow {
+                box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg text-white font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">Learning Path Tracker</h1>
+            <p class="text-xl text-green-200 max-w-2xl mx-auto">Track your daily learning activities, monitor progress, and optimize your journey to land your dream IT job</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Task Management Section -->
+            <section class="lg:col-span-2 space-y-8">
+                <!-- Week Navigation -->
+                <div class="glass-dark rounded-2xl p-6 shadow-xl glow">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-green-300">Weekly Tasks</h2>
+                        <div class="flex space-x-2">
+                            <button id="prev-week" class="glass px-4 py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">Previous</button>
+                            <span id="week-display" class="glass px-4 py-2 rounded-lg font-medium text-green-300">Week 1</span>
+                            <button id="next-week" class="glass px-4 py-2 rounded-lg hover:bg-green-900/30 transition-all text-green-300">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Days Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Day Cards will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Add Task Form -->
+                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
+                    <h3 class="text-xl font-semibold mb-4 text-green-300">Add New Task</h3>
+                    <form id="task-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-green-200">Day</label>
+                                <select id="task-day" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                    <option value="saturday">Saturday</option>
+                                    <option value="sunday">Sunday</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-green-200">Domain</label>
+                                <select id="task-domain" class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                                    <option value="ai-ml">AI/ML</option>
+                                    <option value="web-dev">Web Development</option>
+                                    <option value="data-science">Data Science</option>
+                                    <option value="cloud">Cloud Computing</option>
+                                    <option value="cybersecurity">Cybersecurity</option>
+                                    <option value="programming">Programming</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 text-green-200">Task Description</label>
+                            <input id="task-description" type="text" placeholder="e.g., Complete ML project, Study algorithms..." class="w-full bg-dark-card border border-green-500/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg">Add Task</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="space-y-8">
+                <!-- Stats Overview -->
+                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-2xl font-semibold mb-6 text-green-300">Progress Overview</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-200">Completion Rate</span>
+                            <span id="completion-rate" class="text-xl font-bold text-green-400">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-2.5">
+                            <div id="completion-bar" class="bg-gradient-to-r from-green-500 to-emerald-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mt-6">
+                            <div class="text-center p-4 glass rounded-lg">
+                                <div class="text-2xl font-bold text-green-400" id="completed-tasks">0</div>
+                                <div class="text-sm text-green-300">Completed</div>
+                            </div>
+                            <div class="text-center p-4 glass rounded-lg">
+                                <div class="text-2xl font-bold text-emerald-400" id="total-tasks">0</div>
+                                <div class="text-sm text-emerald-300">Total Tasks</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Distribution -->
+                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-2xl font-semibold mb-4 text-green-300">Domain Focus</h2>
+                    <div class="h-64">
+                        <canvas id="domain-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Weekly Progress -->
+                <div class="glass-dark rounded-2xl p-6 shadow-xl animate-slide-up glow">
+                    <h2 class="text-2xl font-semibold mb-4 text-green-300">Weekly Progress</h2>
+                    <div class="h-64">
+                        <canvas id="weekly-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Data Management
+        class LearningTracker {
+            constructor() {
+                this.currentWeek = 1;
+                this.weeks = this.loadData() || {};
+                this.init();
+            }
+
+            init() {
+                this.renderWeek();
+                this.setupEventListeners();
+                this.updateAnalytics();
+            }
+
+            loadData() {
+                const data = localStorage.getItem('learningTracker');
+                return data ? JSON.parse(data) : {};
+            }
+
+            saveData() {
+                localStorage.setItem('learningTracker', JSON.stringify(this.weeks));
+            }
+
+            getCurrentWeekData() {
+                if (!this.weeks[this.currentWeek]) {
+                    this.weeks[this.currentWeek] = {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [],
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                    };
+                }
+                return this.weeks[this.currentWeek];
+            }
+
+            addTask(day, domain, description) {
+                const weekData = this.getCurrentWeekData();
+                weekData[day].push({
+                    id: Date.now(),
+                    domain,
+                    description,
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                });
+                this.saveData();
+                this.renderWeek();
+                this.updateAnalytics();
+            }
+
+            toggleTask(day, taskId) {
+                const weekData = this.getCurrentWeekData();
+                const task = weekData[day].find(t => t.id === taskId);
+                if (task) {
+                    task.completed = !task.completed;
+                    this.saveData();
+                    this.renderWeek();
+                    this.updateAnalytics();
+                }
+            }
+
+            deleteTask(day, taskId) {
+                const weekData = this.getCurrentWeekData();
+                weekData[day] = weekData[day].filter(t => t.id !== taskId);
+                this.saveData();
+                this.renderWeek();
+                this.updateAnalytics();
+            }
+
+            renderWeek() {
+                const weekData = this.getCurrentWeekData();
+                const daysContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-4');
+                const weekDisplay = document.getElementById('week-display');
+                
+                weekDisplay.textContent = `Week ${this.currentWeek}`;
+                daysContainer.innerHTML = '';
+
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                
+                days.forEach(day => {
+                    const dayData = weekData[day];
+                    const dayCard = this.createDayCard(day, dayData);
+                    daysContainer.appendChild(dayCard);
+                });
+            }
+
+            createDayCard(day, tasks) {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'glass rounded-xl p-4 transition-all duration-300 hover:bg-green-900/10';
+                
+                const dayName = day.charAt(0).toUpperCase() + day.slice(1);
+                const completedCount = tasks.filter(t => t.completed).length;
+                const totalCount = tasks.length;
+                
+                dayCard.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold text-lg text-green-300">${dayName}</h3>
+                        <span class="text-sm bg-green-500/20 text-green-300 px-2 py-1 rounded-full">${completedCount}/${totalCount}</span>
+                    </div>
+                    <div class="space-y-2 max-h-60 overflow-y-auto">
+                        ${tasks.length > 0 ? 
+                            tasks.map(task => `
+                                <div class="p-3 rounded-lg bg-dark-card border border-green-500/20 transition-all duration-300 ${task.completed ? 'opacity-70' : ''}">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" ${task.completed ? 'checked' : ''} 
+                                                class="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500 bg-dark-card" 
+                                                data-day="${day}" data-id="${task.id}">
+                                            <span class="${task.completed ? 'line-through text-gray-400' : 'text-white'}">${task.description}</span>
+                                        </div>
+                                        <button class="text-red-400 hover:text-red-300 transition-colors delete-task" data-day="${day}" data-id="${task.id}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="mt-1 flex justify-between items-center">
+                                        <span class="text-xs px-2 py-1 rounded-full ${this.getDomainColor(task.domain)}">${this.formatDomain(task.domain)}</span>
+                                        <span class="text-xs text-gray-400">${new Date(task.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                            `).join('') : 
+                            '<p class="text-gray-400 text-center py-4">No tasks for this day</p>'
+                        }
+                    </div>
+                `;
+                
+                return dayCard;
+            }
+
+            getDomainColor(domain) {
+                const colors = {
+                    'ai-ml': 'bg-green-500/20 text-green-300',
+                    'web-dev': 'bg-emerald-500/20 text-emerald-300',
+                    'data-science': 'bg-teal-500/20 text-teal-300',
+                    'cloud': 'bg-cyan-500/20 text-cyan-300',
+                    'cybersecurity': 'bg-lime-500/20 text-lime-300',
+                    'programming': 'bg-green-600/20 text-green-400',
+                    'other': 'bg-gray-500/20 text-gray-300'
+                };
+                return colors[domain] || colors['other'];
+            }
+
+            formatDomain(domain) {
+                const names = {
+                    'ai-ml': 'AI/ML',
+                    'web-dev': 'Web Dev',
+                    'data-science': 'Data Science',
+                    'cloud': 'Cloud',
+                    'cybersecurity': 'Security',
+                    'programming': 'Programming',
+                    'other': 'Other'
+                };
+                return names[domain] || domain;
+            }
+
+            setupEventListeners() {
+                // Task form submission
+                document.getElementById('task-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const day = document.getElementById('task-day').value;
+                    const domain = document.getElementById('task-domain').value;
+                    const description = document.getElementById('task-description').value.trim();
+                    
+                    if (description) {
+                        this.addTask(day, domain, description);
+                        document.getElementById('task-description').value = '';
+                        
+                        // Show success feedback
+                        const button = e.target.querySelector('button');
+                        const originalText = button.textContent;
+                        button.textContent = 'Task Added!';
+                        button.classList.remove('from-green-600', 'to-emerald-700');
+                        button.classList.add('from-green-700', 'to-green-800');
+                        
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                            button.classList.remove('from-green-700', 'to-green-800');
+                            button.classList.add('from-green-600', 'to-emerald-700');
+                        }, 1500);
+                    }
+                });
+
+                // Week navigation
+                document.getElementById('prev-week').addEventListener('click', () => {
+                    if (this.currentWeek > 1) {
+                        this.currentWeek--;
+                        this.renderWeek();
+                        this.updateAnalytics();
+                    }
+                });
+
+                document.getElementById('next-week').addEventListener('click', () => {
+                    this.currentWeek++;
+                    this.renderWeek();
+                    this.updateAnalytics();
+                });
+
+                // Event delegation for task checkboxes and delete buttons
+                document.addEventListener('click', (e) => {
+                    if (e.target.type === 'checkbox' && e.target.hasAttribute('data-day')) {
+                        const day = e.target.getAttribute('data-day');
+                        const taskId = parseInt(e.target.getAttribute('data-id'));
+                        this.toggleTask(day, taskId);
+                    }
+                    
+                    if (e.target.closest('.delete-task')) {
+                        const button = e.target.closest('.delete-task');
+                        const day = button.getAttribute('data-day');
+                        const taskId = parseInt(button.getAttribute('data-id'));
+                        this.deleteTask(day, taskId);
+                    }
+                });
+            }
+
+            updateAnalytics() {
+                const weekData = this.getCurrentWeekData();
+                
+                // Calculate completion stats
+                let totalTasks = 0;
+                let completedTasks = 0;
+                const domainCount = {};
+                const dailyCompletion = {
+                    monday: 0, tuesday: 0, wednesday: 0, thursday: 0, 
+                    friday: 0, saturday: 0, sunday: 0
+                };
+
+                Object.keys(weekData).forEach(day => {
+                    const dayTasks = weekData[day];
+                    totalTasks += dayTasks.length;
+                    const dayCompleted = dayTasks.filter(t => t.completed).length;
+                    completedTasks += dayCompleted;
+                    
+                    // Calculate daily completion percentage
+                    dailyCompletion[day] = dayTasks.length > 0 ? 
+                        Math.round((dayCompleted / dayTasks.length) * 100) : 0;
+                    
+                    // Count tasks by domain
+                    dayTasks.forEach(task => {
+                        if (!domainCount[task.domain]) {
+                            domainCount[task.domain] = { total: 0, completed: 0 };
+                        }
+                        domainCount[task.domain].total++;
+                        if (task.completed) {
+                            domainCount[task.domain].completed++;
+                        }
+                    });
+                });
+
+                // Update completion stats
+                const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+                document.getElementById('completion-rate').textContent = `${completionRate}%`;
+                document.getElementById('completion-bar').style.width = `${completionRate}%`;
+                document.getElementById('completed-tasks').textContent = completedTasks;
+                document.getElementById('total-tasks').textContent = totalTasks;
+
+                // Update charts
+                this.updateDomainChart(domainCount);
+                this.updateWeeklyChart(dailyCompletion);
+            }
+
+            updateDomainChart(domainData) {
+                const ctx = document.getElementById('domain-chart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (this.domainChart) {
+                    this.domainChart.destroy();
+                }
+                
+                const domains = Object.keys(domainData);
+                const completedData = domains.map(domain => domainData[domain].completed);
+                const totalData = domains.map(domain => domainData[domain].total);
+                
+                this.domainChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: domains.map(d => this.formatDomain(d)),
+                        datasets: [{
+                            data: totalData,
+                            backgroundColor: [
+                                'rgba(16, 185, 129, 0.7)', // Green
+                                'rgba(5, 150, 105, 0.7)',  // Emerald
+                                'rgba(20, 184, 166, 0.7)', // Teal
+                                'rgba(6, 182, 212, 0.7)',  // Cyan
+                                'rgba(132, 204, 22, 0.7)', // Lime
+                                'rgba(22, 163, 74, 0.7)',  // Green-600
+                                'rgba(107, 114, 128, 0.7)' // Gray
+                            ],
+                            borderColor: [
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(5, 150, 105, 1)',
+                                'rgba(20, 184, 166, 1)',
+                                'rgba(6, 182, 212, 1)',
+                                'rgba(132, 204, 22, 1)',
+                                'rgba(22, 163, 74, 1)',
+                                'rgba(107, 114, 128, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: 'white',
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateWeeklyChart(dailyCompletion) {
+                const ctx = document.getElementById('weekly-chart').getContext('2d');
+                
+                // Destroy existing chart if it exists
+                if (this.weeklyChart) {
+                    this.weeklyChart.destroy();
+                }
+                
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                const completionData = [
+                    dailyCompletion.monday,
+                    dailyCompletion.tuesday,
+                    dailyCompletion.wednesday,
+                    dailyCompletion.thursday,
+                    dailyCompletion.friday,
+                    dailyCompletion.saturday,
+                    dailyCompletion.sunday
+                ];
+                
+                this.weeklyChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: days,
+                        datasets: [{
+                            label: 'Completion %',
+                            data: completionData,
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Completion: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new LearningTracker();
+        });
+    </script>
+</body>
+</html>
